@@ -34,14 +34,21 @@ public class MovieController {
     }
 
     // Obtener todas las Películas con un estatus especifico
-    @GetMapping("/{status}")
+    @GetMapping("/all-movies-by-status/{status}")
     public ResponseEntity<List<MovieResponseDTO>> getAllMoviesByStatus(@PathVariable String status){
         List<MovieResponseDTO> movies = iMovieService.findAllMoviesByStatus(status);
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
+    // Obtener todas las Películas con un nombre especifico
+    @GetMapping("/all-movies-by-name/{name}")
+    public ResponseEntity<List<MovieResponseDTO>> getAllMoviesByName(@PathVariable String name){
+        List<MovieResponseDTO> movies = iMovieService.findAllMoviesByName(name);
+        return new ResponseEntity<>(movies, HttpStatus.OK);
+    }
+
     // Obtener la Película por ID
-    @GetMapping("/{id}")
+    @GetMapping("/movie/{id}")
     public ResponseEntity<MovieResponseDTO> getMovieById(@PathVariable Long id){
         try {
             MovieResponseDTO movie = iMovieService.findMovieById(id);
@@ -62,6 +69,7 @@ public class MovieController {
         }
     }
 
+    // Borrar Película
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteMovie(@PathVariable Long id){
         try {

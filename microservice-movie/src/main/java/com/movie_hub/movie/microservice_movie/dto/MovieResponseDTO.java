@@ -13,7 +13,9 @@ public class MovieResponseDTO {
     private Long id;
     private String name;
     private String description;
+    private String posterPath;
     private Double rating;
     private String status;
-    private LocalDateTime createdAt;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 }

@@ -24,6 +24,7 @@ public class IMovieServiceImpl implements IMovieService {
     public MovieResponseDTO createMovie(MovieRequestDTO request) {
         Movie movie = Movie.builder()
                 .name(request.getName())
+                .posterPath(request.getPosterPath())
                 .description(request.getDescription())
                 .rating(request.getRating())
                 .status(request.getStatus())
@@ -31,7 +32,7 @@ public class IMovieServiceImpl implements IMovieService {
                 .build();
 
         Movie savedMovie = movieRepository.save(movie);
-        return  mapToResponseDTO(savedMovie);
+        return mapToResponseDTO(savedMovie);
     }
 
     @Override
@@ -50,16 +51,24 @@ public class IMovieServiceImpl implements IMovieService {
     }
 
     @Override
+    public List<MovieResponseDTO> findAllMoviesByName(String name) {
+        return StreamSupport.stream(movieRepository.findAll().spliterator(), false)
+                .filter(m -> m.getName().equalsIgnoreCase(name))
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public MovieResponseDTO findMovieById(Long id) {
         return movieRepository.findById(id)
                 .map(this::mapToResponseDTO)
-                .orElseThrow(()-> new RuntimeException("Película no encontrada con el ID "+ id));
+                .orElseThrow(() -> new RuntimeException("Película no encontrada con el ID " + id));
     }
 
     @Override
     public MovieResponseDTO updateMovie(Long id, MovieRequestDTO request) {
         Movie existingMovie = movieRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Película no encontrada con el ID "+ id));
+                .orElseThrow(() -> new RuntimeException("Película no encontrada con el ID " + id));
 
         existingMovie.setName(request.getName());
         existingMovie.setDescription(request.getDescription());
@@ -74,8 +83,8 @@ public class IMovieServiceImpl implements IMovieService {
 
     @Override
     public void deleteMovie(Long id) {
-        if(!movieRepository.existsById(id)){
-            throw new RuntimeException("Película no encontrada con el ID "+ id);
+        if (!movieRepository.existsById(id)) {
+            throw new RuntimeException("Película no encontrada con el ID " + id);
         }
         movieRepository.deleteById(id);
     }
@@ -85,9 +94,11 @@ public class IMovieServiceImpl implements IMovieService {
                 movie.getId(),
                 movie.getName(),
                 movie.getDescription(),
+                movie.getPosterPath(),
                 movie.getRating(),
                 movie.getStatus(),
-                movie.getCreatedAt()
+                movie.getCreatedAt(),
+                movie.getUpdatedAt()
         );
     }
 }

@@ -21,7 +21,6 @@
         <module>microservice-eureka</module>
         <module>microservice-config</module>
         <module>microservice-movie</module>
-        <module>microservice-rental</module>
     </modules>
 
     <properties>

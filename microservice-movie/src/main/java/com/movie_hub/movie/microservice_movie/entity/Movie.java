@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -20,12 +22,20 @@ public class Movie {
     private Long id;
     private String name;
     private String description;
-    private String coverUrl;
+    @Column(name = "poster_path")
+    private String posterPath;
     private Double rating;
     private String status; // "publicada" o "en edición"
 
-    @Column(name = "created_At")
+    @CreationTimestamp
+    @Column(name = "created_At", updatable = false, nullable = false)
     private LocalDateTime createdAt;
-    @Column(name = "updated_At")
+    @UpdateTimestamp
+    @Column(name = "updated_At", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PreUpdate
+    void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

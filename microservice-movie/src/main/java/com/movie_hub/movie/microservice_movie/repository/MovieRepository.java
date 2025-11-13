@@ -12,5 +12,6 @@ import java.util.List;
 public interface MovieRepository extends CrudRepository<Movie, Long> {
 
         List<MovieResponseDTO> findAllMoviesByStatus(String status);
+        List<MovieResponseDTO> findAllMoviesByName(String name);
 
 }

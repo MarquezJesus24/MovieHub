@@ -14,6 +14,7 @@ public interface IMovieService {
     // R - READ
     List<MovieResponseDTO> findAllMovies();
     List<MovieResponseDTO> findAllMoviesByStatus(String status);
+    List<MovieResponseDTO> findAllMoviesByName(String name);
     MovieResponseDTO findMovieById(Long id);
 
     // U - UPDATE
